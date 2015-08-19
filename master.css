@@ -1,0 +1,20 @@
+body {background-color: #FFFFFF;} /*#009933*/
+p.blocktext {
+    text-align: center
+}
+div.container {
+    height: 10em;
+    position: relative 
+    margin: 0;
+    background: #009933;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) }
+
+img{
+ display: block;
+    margin-left: auto;
+    margin-right: auto
+}

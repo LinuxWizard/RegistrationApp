@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="master.css">
+		<meta charset="UTF-8">
+		<title>MAES Registration</title>
+		<script type="text/javascript" src="accessdb.js"></script>
+	</head>
+
+	<body>
+		<img src="maes-logo.jpg" alt="Pledge Your Loyalty" style="width:304px;height:304px;">
+		<div class=container>
+
+			<p class=blocktext>Enter your name please</p>
+
+			First name: <input type="text" id="fname"><br>
+			Last name: <input type="text" id="lname"><br>
+			<button onclick="searchRegistration()">Check In</button>
+
+			<p class=blocktext>If you are registered your badge will be printed</p>
+
+			<p class=blocktext id="registration"></p>
+		</div>
+		<div id =pdfDiv height=0 width=0>
+		</div>
+
+		<div id="idContainer" height=0 width=0></div>
+		
+		<script>
+		function PrintPdf() {
+			idPdf.Print();
+		}
+
+		function idPdf_onreadystatechange() {
+			if (idPdf.readyState === 4)
+				setTimeout(PrintPdf, 1000);
+		}
+
+		function LoadAndPrint(url)
+		{
+			idContainer.innerHTML = 
+				'<object id="idPdf" onreadystatechange="idPdf_onreadystatechange()"'+
+					'width="0" height="0" type="application/pdf"' +
+					'data="' + url + '?#view=Fit&scrollbar=0&toolbar=0&navpanes=0">' +
+					'<span>PDF plugin is not available.</span>'+
+				'</object>';
+		}
+		
+		function searchRegistration() {
+			var firstName = document.getElementById("fname").value;
+			var lastName = document.getElementById("lname").value;
+			var currentPath = ((location+"").replace(/%20/g, " ").replace("file:///", "").replace("\\", "/").replace("index.html", ""));
+			var myDB = new ACCESSdb(currentPath+"Membership.mdb",  {showErrors:true})
+			var checkNameSQL = "SELECT * FROM Members WHERE FirstName='"+firstName+"' AND LastName='"+lastName+"' AND Registered="+true+" AND BadgePrinted="+false;
+			var updatePrintSQL = "UPDATE Members SET BadgePrinted="+true+" WHERE FirstName='"+firstName+"' AND LastName='"+lastName+"' AND Registered="+true;
+			if(myDB.query(checkNameSQL)) {
+				alert("Badge is being printed!");
+				myDB.query(updatePrintSQL);
+				LoadAndPrint(currentPath+"badges/"+firstName+lastName+".pdf");
+			}
+			else{
+			alert("Name not found in registration list, Or badge already printed. Contact Staff Member.")
+			}
+		}
+		
+		</script>
+
+
+	</body>
+
+</html>
