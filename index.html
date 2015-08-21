@@ -23,7 +23,7 @@
 				<input type="radio" id="r2" name="membershipLevel" value="professional">Professional
 				<br>
 				Please select your school/affiliation:<br>
-				<select name="schools"  >
+				<select name="schools" id="s1">
 					<option value="Student Chapters: Arizona State University">Arizona State University</option>
 					<option value="Student Chapters: At Large">At Large</option>
 					<option value="Student Chapters: Colorado State University - Pueblo">Colorado State University - Pueblo</option>
@@ -57,7 +57,7 @@
 					<option value="Student Chapters: UT, San Antonio">University of Texas, San Antonio</option>
 				</select>
 					
-				<select name="professionalChapters"  class="select3-basic">
+				<select name="professionalChapters"  class="select3-basic" id="s2">
 					<option value="Professional Chapters: At Large">At Large</option>
 					<option value="Professional Chapters: Bay Area">Bay Area Professional Chapter</option>
 					<option value="Professional Chapters: El Paso">El Paso Professional Chapter</option>
@@ -104,9 +104,11 @@
 			//Get value of radio button and set variable
 			if (document.getElementById('r1').checked) {
 				var membership = document.getElementById('r1').value;
+				var selectedGroup = document.getElementById('s1').value;
 			}
 			else{
 				var membership = document.getElementById('r2').value;
+				var selectedGroup = document.getElementById('s2').value;
 			}
 			//Initiate other variables from what was submitted
 			var firstName = document.getElementById("fname").value;
@@ -116,11 +118,18 @@
 			var currentPath = ((location+"").replace(/%20/g, " ").replace("file:///", "").replace("\\", "/").replace("index.html", ""));
 			
 			//Initiate database object
-			var myDB = new ACCESSdb(currentPath+"Membership.mdb",  {showErrors:true})
+			var myDB = new ACCESSdb(currentPath+"Membership1.mdb",  {showErrors:true})
 			
 			//Initiate sql queries to be used
-			var checkNameSQL = "SELECT * FROM Members WHERE FirstName='"+firstName+"' AND LastName='"+lastName+"' AND Registered="+true+" AND BadgePrinted="+false;
-			var updatePrintSQL = "UPDATE Members SET BadgePrinted="+true+" WHERE FirstName='"+firstName+"' AND LastName='"+lastName+"' AND Registered="+true;
+			if(membership === "student"){
+				var checkNameSQL = "SELECT First_Name FROM 2014_Student_Registration WHERE Primary_Group='"+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true+" AND BadgePrinted="+false;
+				var updatePrintSQL = "UPDATE 2014_Student_Registration SET BadgePrinted="+true+" WHERE Primary_Group='"+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
+			}
+			else{
+				var checkNameSQL = "SELECT First_Name FROM 2014_Professional_Registration WHERE Primary_Group='"+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true+" AND BadgePrinted="+false;
+				var updatePrintSQL = "UPDATE 2014_Professional_Registration SET BadgePrinted="+true+" WHERE Primary_Group='"+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
+			}
+			
 			
 			//If the name is found and paid then print badge
 			if(myDB.query(checkNameSQL)) {
