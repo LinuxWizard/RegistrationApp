@@ -4,6 +4,7 @@
 		<link rel="stylesheet" type="text/css" href="master.css">
 		<meta charset="UTF-8">
 		<title>MAES Registration</title>
+		<script src="jquery.min.js"></script>
 		<script type="text/javascript" src="accessdb.js"></script>
 	</head>
 
@@ -12,21 +13,73 @@
 		<div class=container>
 
 			<p class=blocktext>Enter your name please</p>
-
-			First name: <input type="text" id="fname"><br>
-			Last name: <input type="text" id="lname"><br>
+				First name:<br>
+				<input type="text" id="fname">
+				<br>
+				Last name:<br>
+				<input type="text" id="lname">
+				<br>
+				<input type="radio" id="r1" name="membershipLevel" value="student" checked>Student
+				<input type="radio" id="r2" name="membershipLevel" value="professional">Professional
+				<br>
+				Please select your school/affiliation:<br>
+				<select name="schools"  >
+					<option value="Student Chapters: Arizona State University">Arizona State University</option>
+					<option value="Student Chapters: At Large">At Large</option>
+					<option value="Student Chapters: Colorado State University - Pueblo">Colorado State University - Pueblo</option>
+					<option value="Student Chapters: CSU, Chico">CSU, Chico</option>
+					<option value="Student Chapters: CSU, Fullerton">CSU, Fullerton</option>
+					<option value="Student Chapters: CSU, Long Beach">CSU, Long Beach</option>
+					<option value="Student Chapters: George Mason Universtiy">George Mason University</option>
+					<option value="Student Chapters: Iowa State University">Iowa State University</option>
+					<option value="Student Chapters: Laredo Community College">Laredo Community College</option>
+					<option value="Student Chapters: Long Beach City College">Long Beach City College</option>
+					<option value="Student Chapters: Massachusetts Institute of Technology">Massachusetts Institute of Technology</option>
+					<option value="Student Chapters: New Mexico State University">New Mexico State University</option>
+					<option value="Student Chapters: Purdue University">Purdue University</option>
+					<option value="Student Chapters: San Antonio College">San Antonio College</option>
+					<option value="Student Chapters: San Diego State University">San Diego State University</option>
+					<option value="Student Chapters: San Jose State University">San Jose State University</option>
+					<option value="Student Chapters: Texas A&M">Texas A&M </option>
+					<option value="Student Chapters: Texas A&M, Kingsville">Texas A&M, Kingsville</option>
+					<option value="Student Chapters: Texas State University, San Marcos">Texas State University, San Marcos</option>
+					<option value="Student Chapters: Tufts University">Tufts University</option>
+					<option value="Student Chapters: UC, Davis">University of California, Davis</option>
+					<option value="Student Chapters: UC, Irvine">University of California, Irvine</option>
+					<option value="Student Chapters: University of California, Berkeley">University of California, Berkeley</option>
+					<option value="Student Chapters: University of Colorado Boulder">University of Colorado Boulder</option>
+					<option value="Student Chapters: University of Houston">University of Houston</option>
+					<option value="Student Chapters: University of Nebraska at Omaha">University of Nebraska at Omaha</option>
+					<option value="Student Chapters: University of Nevada, Las Vegas">University of Nevada, Las Vegas</option>
+					<option value="Student Chapters: University of New Mexico">University of New Mexico</option>
+					<option value="Student Chapters: UT, El Paso">University of Texas, El Paso</option>
+					<option value="Student Chapters: UT, Pan Am">University of Texas, Pan Am</option>
+					<option value="Student Chapters: UT, San Antonio">University of Texas, San Antonio</option>
+				</select>
+					
+				<select name="professionalChapters"  class="select3-basic">
+					<option value="Professional Chapters: At Large">At Large</option>
+					<option value="Professional Chapters: Bay Area">Bay Area Professional Chapter</option>
+					<option value="Professional Chapters: El Paso">El Paso Professional Chapter</option>
+					<option value="Professional Chapters: Houston">Houston Professional Chapter</option>
+					<option value="Professional Chapters: Long Beach">Long Beach Professional Chapter</option>
+					<option value="Professional Chapters: Metro DC">Metro DC Professional Chapter</option>
+					<option value="Professional Chapters: Orange County">Orange County Professional Chapter</option>
+					<option value="Professional Chapters: San Diego">San Diego Professional Chapter</option>
+					<option value="Student Chapters: Texas A&M">Texas A&M Professional Chapter</option>
+				</select>
+				<br><br>
 			<button onclick="searchRegistration()">Check In</button>
 
 			<p class=blocktext>If you are registered your badge will be printed</p>
 
-			<p class=blocktext id="registration"></p>
 		</div>
 		<div id =pdfDiv height=0 width=0>
 		</div>
-
 		<div id="idContainer" height=0 width=0></div>
 		
 		<script>
+		//functions to load pdf of name badge into invisible frame and print
 		function PrintPdf() {
 			idPdf.Print();
 		}
@@ -47,23 +100,50 @@
 		}
 		
 		function searchRegistration() {
+		//Function to look through DB and print name badges
+			//Get value of radio button and set variable
+			if (document.getElementById('r1').checked) {
+				var membership = document.getElementById('r1').value;
+			}
+			else{
+				var membership = document.getElementById('r2').value;
+			}
+			//Initiate other variables from what was submitted
 			var firstName = document.getElementById("fname").value;
 			var lastName = document.getElementById("lname").value;
+			
+			//Obtain current system path
 			var currentPath = ((location+"").replace(/%20/g, " ").replace("file:///", "").replace("\\", "/").replace("index.html", ""));
+			
+			//Initiate database object
 			var myDB = new ACCESSdb(currentPath+"Membership.mdb",  {showErrors:true})
+			
+			//Initiate sql queries to be used
 			var checkNameSQL = "SELECT * FROM Members WHERE FirstName='"+firstName+"' AND LastName='"+lastName+"' AND Registered="+true+" AND BadgePrinted="+false;
 			var updatePrintSQL = "UPDATE Members SET BadgePrinted="+true+" WHERE FirstName='"+firstName+"' AND LastName='"+lastName+"' AND Registered="+true;
+			
+			//If the name is found and paid then print badge
 			if(myDB.query(checkNameSQL)) {
 				alert("Badge is being printed!");
 				myDB.query(updatePrintSQL);
 				LoadAndPrint(currentPath+"badges/"+firstName+lastName+".pdf");
 			}
+			
+			//if name is not found or unpaid throw warning message
 			else{
 			alert("Name not found in registration list, Or badge already printed. Contact Staff Member.")
 			}
 		}
 		
+		//Function to switch drop-down lists on radio button check
+		$('[name="membershipLevel"]').on('change', function() {
+			var state = this.id == 'r2';
+			$('[name="professionalChapters"]').toggle(state);
+			$('[name="schools"]').toggle(!state);
+		});
+		
 		</script>
+		
 
 
 	</body>
