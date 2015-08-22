@@ -3,7 +3,7 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="master.css">
 		<meta charset="UTF-8">
-		<title>MAES Registration</title>
+		<title>MAES Registration</title>			
 		<script src="jquery.min.js"></script>
 		<script type="text/javascript" src="accessdb.js"></script>
 	</head>
@@ -122,25 +122,41 @@
 			
 			//Initiate sql queries to be used
 			if(membership === "student"){
-				var checkNameSQL = "SELECT First_Name FROM 2014_Student_Registration WHERE Primary_Group='Student Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true+" AND BadgePrinted="+false;
+				var checkNameSQL = "SELECT First_Name FROM 2014_Student_Registration WHERE Primary_Group='Student Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 				var updatePrintSQL = "UPDATE 2014_Student_Registration SET BadgePrinted="+true+" WHERE Primary_Group='Student Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
 			}
 			else{
-				var checkNameSQL = "SELECT First_Name FROM 2014_Professional_Registration WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true+" AND BadgePrinted="+false;
+				var checkNameSQL = "SELECT First_Name FROM 2014_Professional_Registration WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 				var updatePrintSQL = "UPDATE 2014_Professional_Registration SET BadgePrinted="+true+" WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
 			}
 			
-			
-			//If the name is found and paid then print badge
+			//If the name is found check for paid status
 			if(myDB.query(checkNameSQL)) {
-				alert("Badge is being printed!");
-				myDB.query(updatePrintSQL);
-				LoadAndPrint(currentPath+"badges/"+membership+"/"+primaryGroup+"/"+firstName+lastName+".pdf");
+				checkNameSQL = checkNameSQL+" AND Paid="+true;
+				
+				//if name and paid status are correct check for badge printed status
+				if(myDB.query(checkNameSQL)){
+					checkNameSQL = checkNameSQL+" AND BadgePrinted="+false;
+					
+					//If badge not printed, print and update BadgePrinted state to true
+					if(myDB.query(checkNameSQL)){
+						alert("Badge is being printed!");
+						myDB.query(updatePrintSQL);
+						LoadAndPrint(currentPath+"badges/"+membership+"/"+selectedGroup+"/"+firstName+lastName+".pdf");
+					}
+					//If BadgePrinted is true throw alert message
+					else{
+						alert("Badge Already Printed! If this is a mistake contact staff member");
+					}
+				}
+				//If Paid is false throw error message
+				else{
+					alert("Registration not paid yet. If this is an error contact staff member.");
+				}
 			}
-			
-			//if name is not found or unpaid throw warning message
+			//if name is not found throw warning message
 			else{
-			alert("Name not found in registration list, Or badge already printed. Contact Staff Member.")
+			alert("Name not found in registration list. Contact Staff Member.")
 			}
 		}
 		
