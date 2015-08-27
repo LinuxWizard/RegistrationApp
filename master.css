@@ -3,7 +3,12 @@ p.blocktext {
     text-align: center
 }
 div.container {
-    height: 15em;
+    height: 17em;
+	border-style: solid;
+	border-width: 10px;
+	border-color: #009933;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 20px;
     position: relative 
     margin: 0;
     background: #009933;
@@ -17,6 +22,12 @@ img{
  display: block;
     margin-left: auto;
     margin-right: auto
+}
+
+div.buttons{
+	position: absolute;
+	bottom: 0;
+	left: 0;
 }
 
 .select3-basic {display:none;}

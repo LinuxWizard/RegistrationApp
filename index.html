@@ -12,7 +12,7 @@
 		<img src="maes-logo.jpg" alt="Pledge Your Loyalty" style="width:304px;height:304px;">
 		<div class=container>
 
-			<p class=blocktext>Enter your name please</p>
+			<p class=blocktext>Enter your information Please.</p>
 				First name:<br>
 				<input type="text" id="fname">
 				<br>
@@ -69,12 +69,13 @@
 					<option value="Texas A&M">Texas A&M Professional Chapter</option>
 				</select>
 				<br><br>
-			<button onclick="searchRegistration()">Check In</button>
+			<b>By submitting, I agree that I have read and understood 
+			<br>the MAES <a href="TandC.html"  onclick="window.open('TandC.html', 'myWindow', 'status = 1, height = 600, width = 600, resizable = 0' ); return false;">code</a> of conduct.</b><br />
+				I accept: <input type="checkbox" value="0" name="agree"><br>
+			<button onclick="return checkCheckBox(this)">Check In</button>
 
 			<p class=blocktext>If you are registered your badge will be printed</p>
 
-		</div>
-		<div id =pdfDiv height=0 width=0>
 		</div>
 		<div id="idContainer" height=0 width=0></div>
 		
@@ -112,13 +113,9 @@
 			}
 			//Initiate other variables from what was submitted
 			var firstName = document.getElementById("fname").value;
+			fname.value="";
 			var lastName = document.getElementById("lname").value;
-			
-			//Obtain current system path
-			var currentPath = ((location+"").replace(/%20/g, " ").replace("file:///", "").replace("\\", "/").replace("index.html", ""));
-			
-			//Initiate database object
-			var myDB = new ACCESSdb(currentPath+"Membership.mdb",  {showErrors:true})
+			lname.value="";
 			
 			//Initiate sql queries to be used
 			if(membership === "student"){
@@ -129,6 +126,12 @@
 				var checkNameSQL = "SELECT First_Name FROM 2014_Professional_Registration WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 				var updatePrintSQL = "UPDATE 2014_Professional_Registration SET BadgePrinted="+true+" WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
 			}
+			
+			//Obtain current system path
+			var currentPath = ((location+"").replace(/%20/g, " ").replace("file:///", "").replace("\\", "/").replace("index.html", ""));
+			
+			//Initiate database object
+			var myDB = new ACCESSdb(currentPath+"Membership.mdb",  {showErrors:true})
 			
 			//If the name is found check for paid status
 			if(myDB.query(checkNameSQL)) {
@@ -159,6 +162,20 @@
 			alert("Name not found in registration list. Contact Staff Member.")
 			}
 		}
+		function myPopup(){
+			window.open("TandC.html", "myWindow", "status = 1, height = 600, width = 600, resizable = 0" );
+			return false;
+		}
+		
+		function checkCheckBox(f){
+			if (agree.checked == false )
+			{
+				alert('Please check the box to continue.');
+				return false;
+			}else
+				searchRegistration();
+		}
+		
 		
 		//Function to switch drop-down lists on radio button check
 		$('[name="membershipLevel"]').on('change', function() {
