@@ -8,12 +8,12 @@ div.container {
 	border-width: 20px;
 	border-color: #009933;
 	font-family: "Times New Roman", Times, serif;
-	font-size: 20px;
+	font-size: 30px;
     position: relative 
     margin: 0;
     background: #009933;
     position: absolute;
-    top: 50%;
+    top: 65%;
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%) }
@@ -24,10 +24,16 @@ img{
     margin-right: auto
 }
 
+select.select{
+	font-size: 20px;
+}
+
 div.buttons{
 	position: absolute;
 	bottom: 0;
 	left: 0;
 }
 
-.select3-basic {display:none;}
+.select3-basic {display:none;
+font-size: 20px;
+}
