@@ -92,9 +92,15 @@
 				var membership = document.getElementById('r1').value;
 				var selectedGroup = document.getElementById('s1').value;
 			}
-			else{
+			else if (document.getElementById('r2').checked){
 				var membership = document.getElementById('r2').value;
 				var selectedGroup = document.getElementById('s2').value;
+			}
+			else if (document.getElementById('r3').checked){
+				var membership = document.getElementById('r3').value;
+			}
+			else if (document.getElementById('r4').checked){
+				var membership = document.getElementById('r4').value;
 			}
 			//Initiate other variables from what was submitted
 			var firstName = document.getElementById("fname").value;
@@ -117,11 +123,35 @@
 				var updatePrintSQL = "UPDATE 2014_Student_Registration SET BadgePrinted="+true+" WHERE Primary_Group='Student Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
 				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2014_Student_Registration WHERE Primary_Group='Student Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 			}
-			else{
+			else if(membership === "professional"){
 				var checkNameSQL = "SELECT First_Name FROM 2014_Professional_Registration WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 				var updatePrintSQL = "UPDATE 2014_Professional_Registration SET BadgePrinted="+true+" WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
 				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2014_Professional_Registration WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 				var companySQL = "SELECT Company_Name FROM 2014_Professional_Registration WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				if(myDB.query(companySQL)){
+					var companyArray = myDB.query(companySQL);
+					selectedGroup = companyArray[0].Company_Name;
+				}else{
+					selectedGroup = NO_COMPANY;
+				}
+			}
+			else if(membership === "exhibitior"){
+				var checkNameSQL = "SELECT First_Name FROM 2014_Exhibitors_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var updatePrintSQL = "UPDATE 2014_Exhibitors_tbl SET BadgePrinted="+true+" WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
+				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2014_Exhibitors_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var companySQL = "SELECT Company/Organization_Name FROM 2014_Exhibitors_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				if(myDB.query(companySQL)){
+					var companyArray = myDB.query(companySQL);
+					selectedGroup = companyArray[0].Company_Name;
+				}else{
+					selectedGroup = NO_COMPANY;
+				}
+			}
+			else if(membership === "bravoWinner"){
+				var checkNameSQL = "SELECT First_Name FROM 2014_BRAVO_AWARDS_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var updatePrintSQL = "UPDATE 2014_BRAVO_AWARDS_tbl SET BadgePrinted="+true+" WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
+				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2014_BRAVO_AWARDS_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var companySQL = "SELECT Organization FROM 2014_BRAVO_AWARDS_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 				if(myDB.query(companySQL)){
 					var companyArray = myDB.query(companySQL);
 					selectedGroup = companyArray[0].Company_Name;
@@ -349,10 +379,6 @@
 			}
 		});
 		
-		</script>
-		
-
-
+		</script>		
 	</body>
-
 </html>
