@@ -174,7 +174,7 @@
 						var barcodeArray = myDB.query(barcodeSQL);
 						var barcode = barcodeArray[0].Registration_Badge_ID;
 						myDB.query(updatePrintSQL);
-						printBadge(firstName,lastName,selectedGroup,barcode, noMeal);
+						printBadge(firstName,lastName,selectedGroup,barcode,false);
 					}
 					//If BadgePrinted is true throw alert message
 					else{
@@ -338,13 +338,16 @@
 </DieCutLabel>';
 		
 		var label = dymo.label.framework.openLabelXml(labelXml);
+		fName = capitalizeFirstLetter(fName);
+		lName = capitalizeFirstLetter(lName);
+		
 		var name = fName+" "+lName;
 		if (group){
 			if(~(group === "NO_COMPANY")){
 				label.setObjectText("COMPANY", group);
 			}
 		}
-		if(nomeal){
+		if(noMeal){
 			label.setObjectText("NOMEAL", NM);
 		}
 		label.setObjectText("NAME", name);
@@ -378,6 +381,10 @@
 				$('[name="dropDown"]').toggle(false);
 			}
 		});
+		
+		function capitalizeFirstLetter(string) {
+			return string.charAt(0).toUpperCase() + string.slice(1);
+		}
 		
 		</script>		
 	</body>
