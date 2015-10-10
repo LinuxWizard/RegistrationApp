@@ -135,14 +135,14 @@
 					selectedGroup = NO_COMPANY;
 				}
 			}
-			else if(membership === "exhibitior"){
-				var checkNameSQL = "SELECT First_Name FROM 2014_Exhibitors_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
-				var updatePrintSQL = "UPDATE 2014_Exhibitors_tbl SET BadgePrinted="+true+" WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
-				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2014_Exhibitors_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
-				var companySQL = "SELECT Company/Organization_Name FROM 2014_Exhibitors_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+			else if(membership === "exhibitor"){
+				var checkNameSQL = "SELECT First_Name FROM 2014_Exhibitor_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var updatePrintSQL = "UPDATE 2014_Exhibitor_tbl SET BadgePrinted="+true+" WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
+				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2014_Exhibitor_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var companySQL = "SELECT Company/Organization_Name FROM 2014_Exhibitor_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 				if(myDB.query(companySQL)){
 					var companyArray = myDB.query(companySQL);
-					selectedGroup = companyArray[0].Company_Name;
+					selectedGroup = companyArray[0].Company/Organization_Name;
 				}else{
 					selectedGroup = NO_COMPANY;
 				}
@@ -154,7 +154,7 @@
 				var companySQL = "SELECT Organization FROM 2014_BRAVO_AWARDS_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 				if(myDB.query(companySQL)){
 					var companyArray = myDB.query(companySQL);
-					selectedGroup = companyArray[0].Company_Name;
+					selectedGroup = companyArray[0].Organization;
 				}else{
 					selectedGroup = NO_COMPANY;
 				}
@@ -267,7 +267,7 @@
 			<Verticalized>False</Verticalized>\
 			<StyledText>\
 				<Element>\
-					<String>Akana, inc.</String>\
+					<String>Professional</String>\
 					<Attributes>\
 						<Font Family="Arial" Size="22" Bold="True" Italic="False" Underline="False" Strikeout="False" />\
 						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
