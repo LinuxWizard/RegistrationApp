@@ -139,10 +139,10 @@
 				var checkNameSQL = "SELECT First_Name FROM 2014_Exhibitor_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 				var updatePrintSQL = "UPDATE 2014_Exhibitor_tbl SET BadgePrinted="+true+" WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
 				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2014_Exhibitor_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
-				var companySQL = "SELECT Company/Organization_Name FROM 2014_Exhibitor_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var companySQL = "SELECT Organization_Name FROM 2014_Exhibitor_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 				if(myDB.query(companySQL)){
 					var companyArray = myDB.query(companySQL);
-					selectedGroup = companyArray[0].Company/Organization_Name;
+					selectedGroup = companyArray[0].Organization_Name;
 				}else{
 					selectedGroup = NO_COMPANY;
 				}
