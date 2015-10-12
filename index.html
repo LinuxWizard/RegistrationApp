@@ -10,7 +10,7 @@
 	</head>
 
 	<body>
-		<img src="maes-logo1.PNG" alt="Pledge Your Loyalty" style="width:749px;height:350px;">
+		<img src="maes-logo1.PNG" alt="Pledge Your Loyalty" style="width:449px;height:250px;">
 		<div class=container>
 
 			<p class=blocktext>Enter your information Please</p>
@@ -119,15 +119,15 @@
 			
 			//Initiate sql queries to be used
 			if(membership === "student"){
-				var checkNameSQL = "SELECT First_Name FROM 2014_Student_Registration WHERE Primary_Group='Student Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
-				var updatePrintSQL = "UPDATE 2014_Student_Registration SET BadgePrinted="+true+" WHERE Primary_Group='Student Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
-				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2014_Student_Registration WHERE Primary_Group='Student Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var checkNameSQL = "SELECT First_Name FROM 2015_Student_Registration WHERE Primary_Group='Student Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var updatePrintSQL = "UPDATE 2015_Student_Registration SET BadgePrinted="+true+" WHERE Primary_Group='Student Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
+				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2015_Student_Registration WHERE Primary_Group='Student Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 			}
 			else if(membership === "professional"){
-				var checkNameSQL = "SELECT First_Name FROM 2014_Professional_Registration WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
-				var updatePrintSQL = "UPDATE 2014_Professional_Registration SET BadgePrinted="+true+" WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
-				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2014_Professional_Registration WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
-				var companySQL = "SELECT Company_Name FROM 2014_Professional_Registration WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var checkNameSQL = "SELECT First_Name FROM 2015_Professional_Registration WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var updatePrintSQL = "UPDATE 2015_Professional_Registration SET BadgePrinted="+true+" WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
+				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2015_Professional_Registration WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var companySQL = "SELECT Company_Name FROM 2015_Professional_Registration WHERE Primary_Group='Professional Chapters: "+selectedGroup+"' AND First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 				if(myDB.query(companySQL)){
 					var companyArray = myDB.query(companySQL);
 					selectedGroup = companyArray[0].Company_Name;
@@ -136,10 +136,10 @@
 				}
 			}
 			else if(membership === "exhibitor"){
-				var checkNameSQL = "SELECT First_Name FROM 2014_Exhibitor_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
-				var updatePrintSQL = "UPDATE 2014_Exhibitor_tbl SET BadgePrinted="+true+" WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
-				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2014_Exhibitor_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
-				var companySQL = "SELECT Organization_Name FROM 2014_Exhibitor_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var checkNameSQL = "SELECT First_Name FROM 2015_Exhibitor_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var updatePrintSQL = "UPDATE 2015_Exhibitor_tbl SET BadgePrinted="+true+" WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
+				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2015_Exhibitor_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var companySQL = "SELECT Organization_Name FROM 2015_Exhibitor_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 				if(myDB.query(companySQL)){
 					var companyArray = myDB.query(companySQL);
 					selectedGroup = companyArray[0].Organization_Name;
@@ -148,10 +148,10 @@
 				}
 			}
 			else if(membership === "bravoWinner"){
-				var checkNameSQL = "SELECT First_Name FROM 2014_BRAVO_AWARDS_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
-				var updatePrintSQL = "UPDATE 2014_BRAVO_AWARDS_tbl SET BadgePrinted="+true+" WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
-				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2014_BRAVO_AWARDS_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
-				var companySQL = "SELECT Organization FROM 2014_BRAVO_AWARDS_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var checkNameSQL = "SELECT First_Name FROM 2015_BRAVO_AWARDS_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var updatePrintSQL = "UPDATE 2015_BRAVO_AWARDS_tbl SET BadgePrinted="+true+" WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"' AND Paid="+true;
+				var barcodeSQL = "SELECT Registration_Badge_ID FROM 2015_BRAVO_AWARDS_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
+				var companySQL = "SELECT Organization FROM 2015_BRAVO_AWARDS_tbl WHERE First_Name='"+firstName+"' AND Last_Name='"+lastName+"'";
 				if(myDB.query(companySQL)){
 					var companyArray = myDB.query(companySQL);
 					selectedGroup = companyArray[0].Organization;
@@ -206,6 +206,7 @@
 	// prints printers information
     function printBadge(fName, lName, group, barcode, noMeal)
     {
+		var printer = "LabelPrinter1";
 		var labelXml = '<?xml version="1.0" encoding="utf-8"?>\
 <DieCutLabel Version="8.0" Units="twips">\
 	<PaperOrientation>Landscape</PaperOrientation>\
@@ -333,7 +334,7 @@
 			<Verticalized>False</Verticalized>\
 			<StyledText>\
 				<Element>\
-					<String>NM</String>\
+					<String></String>\
 					<Attributes>\
 						<Font Family="Arial" Size="12" Bold="False" Italic="False" Underline="False" Strikeout="False" />\
 						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />\
@@ -360,7 +361,7 @@
 		}
 		label.setObjectText("NAME", name);
 		label.setObjectText("BARCODE", barcode);
-		label.print("LabelPrinter1");
+		label.print(printer);
     }	
 		
 		//Function to switch drop-down lists on radio button check.
