@@ -171,11 +171,11 @@
 			
 			//If the name is found check for paid status
 			if(myDB.query(checkNameSQL)) {
-				checkNameSQL = checkNameSQL+" AND Paid="+true;
+				//checkNameSQL = checkNameSQL+" AND Paid="+true;
 				
 				//if name and paid status are correct check for badge printed status
 				if(myDB.query(checkNameSQL)){
-					checkNameSQL = checkNameSQL+" AND BadgePrinted="+false;
+					//checkNameSQL = checkNameSQL+" AND BadgePrinted="+false;
 					
 					//If badge not printed, print and update BadgePrinted state to true
 					if(myDB.query(checkNameSQL)){
